@@ -1,5 +1,10 @@
 # nestjs-api-forge
 
+[![Build & Publish](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/publish.yml/badge.svg)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/publish.yml)
+[![npm version](https://img.shields.io/npm/v/nestjs-api-forge.svg)](https://www.npmjs.com/package/nestjs-api-forge)
+[![npm downloads](https://img.shields.io/npm/dm/nestjs-api-forge.svg)](https://www.npmjs.com/package/nestjs-api-forge)
+[![license](https://img.shields.io/npm/l/nestjs-api-forge.svg)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/blob/main/LICENSE)
+
 Standardized API response formatting, structured error handling, and exception filters for [NestJS](https://nestjs.com/) applications.
 
 ## Features
