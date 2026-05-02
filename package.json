@@ -1,0 +1,52 @@
+{
+  "name": "nestjs-api-forge",
+  "version": "1.0.1",
+  "description": "Standardized API response formatting, error handling, and exception filters for NestJS applications",
+  "author": "Saikat",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "format": "prettier --write 'src/**/*.ts'",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "nestjs",
+    "api",
+    "error-handling",
+    "response-formatter",
+    "exception-filter",
+    "interceptor",
+    "rest-api",
+    "standardized-response"
+  ],
+  "peerDependencies": {
+    "@nestjs/common": "^9.0.0 || ^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^9.0.0 || ^10.0.0 || ^11.0.0",
+    "reflect-metadata": "^0.1.13 || ^0.2.0",
+    "rxjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@types/node": "^20.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirzasaikatahmmed/nestjs-api-forge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mirzasaikatahmmed/nestjs-api-forge/issues"
+  },
+  "homepage": "https://github.com/mirzasaikatahmmed/nestjs-api-forge#readme"
+}
