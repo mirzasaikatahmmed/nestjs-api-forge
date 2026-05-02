@@ -3,6 +3,8 @@ import {
   ApiMeta,
   ApiSuccessResponse,
   ApiErrorResponse,
+  ApiPaginatedResponse,
+  PaginationMeta,
 } from '../interfaces/api-response.interface';
 
 export class ApiResponseDto {
@@ -37,6 +39,37 @@ export class ApiResponseDto {
     meta: Partial<ApiMeta> = {},
   ): ApiSuccessResponse<null> {
     return ApiResponseDto.success(null, message, 204, meta);
+  }
+
+  static paginated<T>(
+    data: T[],
+    total: number,
+    page: number,
+    limit: number,
+    message = 'Data fetched successfully',
+    meta: Partial<ApiMeta> = {},
+  ): ApiPaginatedResponse<T> {
+    const totalPages = Math.ceil(total / limit);
+    const pagination: PaginationMeta = {
+      total,
+      page,
+      limit,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    };
+
+    return {
+      success: true,
+      statusCode: 200,
+      message,
+      data,
+      pagination,
+      meta: {
+        timestamp: new Date().toISOString(),
+        ...meta,
+      },
+    };
   }
 
   static error(
