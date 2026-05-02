@@ -1,0 +1,24 @@
+{
+  "name": "nestjs-api-forge-demo",
+  "version": "1.0.0",
+  "description": "Demo NestJS application showcasing nestjs-api-forge",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main",
+    "start:dev": "ts-node src/main.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.0.0",
+    "nestjs-api-forge": "^1.0.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
