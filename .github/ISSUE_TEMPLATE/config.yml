@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://github.com/mirzasaikatahmmed/nestjs-api-forge/discussions
+    about: Use GitHub Discussions for questions and general help
+  - name: npm package
+    url: https://www.npmjs.com/package/nestjs-api-forge
+    about: View the package on npm

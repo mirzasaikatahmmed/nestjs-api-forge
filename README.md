@@ -1,44 +1,74 @@
-# nestjs-api-forge
+<div align="center">
 
+# ⚡ NestJS API Forge
+
+**Plug-and-play response envelope, exception filter, and error formatting for NestJS REST APIs — zero boilerplate, fully typed.**
+
+[![npm version](https://img.shields.io/npm/v/nestjs-api-forge?color=blue&label=npm)](https://www.npmjs.com/package/nestjs-api-forge)
+[![npm downloads](https://img.shields.io/npm/dm/nestjs-api-forge?color=green)](https://www.npmjs.com/package/nestjs-api-forge)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NestJS](https://img.shields.io/badge/NestJS-%3E%3D9-red)](https://nestjs.com)
+[![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178c6)](https://www.typescriptlang.org)
 [![CI](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/publish.yml?label=build)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/publish.yml)
-[![npm version](https://img.shields.io/npm/v/nestjs-api-forge.svg)](https://www.npmjs.com/package/nestjs-api-forge)
-[![npm downloads](https://img.shields.io/npm/dm/nestjs-api-forge.svg)](https://www.npmjs.com/package/nestjs-api-forge)
-[![license](https://img.shields.io/npm/l/nestjs-api-forge.svg)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/blob/main/LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?logo=github-sponsors)](https://github.com/sponsors/mirzasaikatahmmed)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-☕-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/saikat)
 
-Plug-and-play response envelope, exception filter, and error formatting for [NestJS](https://nestjs.com/) REST APIs — zero boilerplate, fully typed.
+<br/>
 
----
+> One import to standardize every response, every error, and every validation in your NestJS API.
 
-## Features
-
-- **Uniform success envelope** — every handler response wrapped with `success`, `statusCode`, `message`, `data`, and `meta`
-- **Structured error responses** — consistent `code`, `message`, and optional `details` array for all errors
-- **Global exception filter** — handles `HttpException`, `ValidationPipe` errors, and unexpected exceptions
-- **Paginated response helper** — `ApiResponseDto.paginated()` with full pagination meta
-- **Built-in typed exceptions** — drop-in replacements for NestJS built-ins with structured error codes
-- **`@ForgeMessage`** — override per-route success message
-- **`@ForgeRawResponse`** — opt a route out of envelope wrapping
-- **`@ForgeMeta`** — merge custom fields into `meta` per route or controller
-- **`@ForgeDeprecated`** — mark a route as deprecated (adds `meta.deprecated` + `Deprecation` header)
-- **`@ApiForge`** — apply filter + interceptor to a single controller without going global
-- **`ForgeValidationPipe`** — drop-in `ValidationPipe` that throws structured `ValidationException` with typed field details
-- **`ApiForgeModule.forRoot()`** — one-line global registration
-- **`ApiForgeModule.forRootAsync()`** — config-service-driven async options
-- **Correlation ID passthrough** — read `X-Request-ID` / `X-Correlation-ID` from requests, echo on responses
-- **Response time** — optional `meta.responseTime` for every response
-- **Request ID tracing** — optional auto-generated UUID `requestId` in every response `meta`
+</div>
 
 ---
 
-## Installation
+## 🧩 What it does
+
+Register `ApiForgeModule` once and every response from your API is automatically shaped into a consistent envelope. No more manual `{ success, data, message }` wrappers scattered across controllers.
+
+| Layer | What Forge provides |
+|-------|-------------------|
+| 📦 | **Response envelope** — every handler wrapped with `success`, `statusCode`, `message`, `data`, and `meta` |
+| 🛡️ | **Global exception filter** — handles `HttpException`, validation errors, and unexpected crashes uniformly |
+| ✅ | **Structured validation** — `ForgeValidationPipe` replaces `ValidationPipe` with typed field-level error details |
+| 📄 | **Paginated responses** — `ApiResponseDto.paginated()` with full pagination meta in one call |
+| 🏷️ | **Per-route decorators** — override messages, skip wrapping, add custom meta, or mark routes deprecated |
+| 🔍 | **Request tracing** — correlation ID passthrough, auto UUID generation, and response time measurement |
+| 💥 | **Typed exceptions** — drop-in replacements for every NestJS `HttpException` with structured error codes |
+
+### Decorators at a glance
+
+| Decorator | Scope | Description |
+|-----------|-------|-------------|
+| `@ApiForge(options?)` | Controller / Method | Apply filter + interceptor without going global |
+| `@ForgeMessage(msg)` | Controller / Method | Override the success message for that route |
+| `@ForgeRawResponse()` | Controller / Method | Skip envelope wrapping — return raw handler value |
+| `@ForgeMeta(extra)` | Controller / Method | Merge extra key-value pairs into `meta` |
+| `@ForgeDeprecated(notice?)` | Controller / Method | Mark route deprecated — adds `meta.deprecated` + `Deprecation` header |
+
+---
+
+## 📦 Installation
+
+### Requirements
+
+- **Node.js** v18 or higher
+- **NestJS** v9, v10, or v11
+
+### Install
 
 ```bash
 npm install nestjs-api-forge
 ```
 
+Verify the install:
+
+```bash
+node -e "require('nestjs-api-forge'); console.log('nestjs-api-forge installed')"
+```
+
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Register globally in `app.module.ts`
 
@@ -62,19 +92,26 @@ import { ApiForgeModule } from 'nestjs-api-forge';
 export class AppModule {}
 ```
 
-### 2. Use `ForgeValidationPipe` in `main.ts`
+### 2. Add `ForgeValidationPipe` in `main.ts`
 
 ```typescript
+import { NestFactory } from '@nestjs/core';
 import { ForgeValidationPipe } from 'nestjs-api-forge';
+import { AppModule } from './app.module';
 
-app.useGlobalPipes(new ForgeValidationPipe());
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ForgeValidationPipe());
+  await app.listen(3000);
+}
+bootstrap();
 ```
 
-`ForgeValidationPipe` extends NestJS `ValidationPipe` and throws a structured `ValidationException` with typed field-level details — no string parsing required.
+That's it. Every response is now wrapped, every error is structured, and every validation failure returns typed field details.
 
 ---
 
-## Response Shapes
+## 📐 Response Shapes
 
 ### Success (`2xx`)
 
@@ -85,7 +122,7 @@ app.useGlobalPipes(new ForgeValidationPipe());
   "message": "User fetched successfully",
   "data": { "id": 1, "name": "Alice Johnson", "email": "alice@example.com" },
   "meta": {
-    "timestamp": "2026-05-15T10:00:00.000Z",
+    "timestamp": "2025-01-15T10:00:00.000Z",
     "path": "/api/users/1",
     "version": "1.0.0",
     "requestId": "a3f2c1d0-84e5-4b6a-9123-abc123def456",
@@ -103,9 +140,8 @@ app.useGlobalPipes(new ForgeValidationPipe());
   "message": "User not found",
   "error": { "code": "NOT_FOUND" },
   "meta": {
-    "timestamp": "2026-05-15T10:00:00.000Z",
+    "timestamp": "2025-01-15T10:00:00.000Z",
     "path": "/api/users/99",
-    "version": "1.0.0",
     "requestId": "b1e2f3a4-0000-4b5c-8d9e-fedcba987654",
     "responseTime": "2ms"
   }
@@ -126,7 +162,7 @@ app.useGlobalPipes(new ForgeValidationPipe());
       { "field": "address.zip", "message": "must be a string" }
     ]
   },
-  "meta": { "timestamp": "2026-05-15T10:00:00.000Z", "path": "/api/users" }
+  "meta": { "timestamp": "2025-01-15T10:00:00.000Z", "path": "/api/users" }
 }
 ```
 
@@ -147,23 +183,23 @@ app.useGlobalPipes(new ForgeValidationPipe());
     "hasPrevPage": true
   },
   "meta": {
-    "timestamp": "2026-05-15T10:00:00.000Z",
+    "timestamp": "2025-01-15T10:00:00.000Z",
     "path": "/api/users?page=2&limit=10",
     "responseTime": "8ms"
   }
 }
 ```
 
-### Deprecated route
+### Deprecated Route
 
 ```json
 {
   "success": true,
   "statusCode": 200,
   "message": "OK",
-  "data": { },
+  "data": {},
   "meta": {
-    "timestamp": "2026-05-15T10:00:00.000Z",
+    "timestamp": "2025-01-15T10:00:00.000Z",
     "deprecated": true,
     "deprecationNotice": "Use /v2/users instead"
   }
@@ -172,12 +208,12 @@ app.useGlobalPipes(new ForgeValidationPipe());
 
 ---
 
-## API Reference
+## 📖 API Reference
 
 ### `ApiForgeModule.forRoot(options?)`
 
 | Option | Type | Default | Description |
-|---|---|---|---|
+|--------|------|---------|-------------|
 | `includePath` | `boolean` | `true` | Include request path in `meta` |
 | `includeTimestamp` | `boolean` | `true` | Include ISO timestamp in `meta` |
 | `includeRequestId` | `boolean` | `false` | Auto-generate UUID `requestId` in `meta` if no correlation header found |
@@ -187,6 +223,8 @@ app.useGlobalPipes(new ForgeValidationPipe());
 | `defaultSuccessMessage` | `string` | `'Request successful'` | Fallback success message |
 
 ### `ApiForgeModule.forRootAsync(asyncOptions)`
+
+Use when options depend on a config service:
 
 ```typescript
 ApiForgeModule.forRootAsync({
@@ -201,22 +239,12 @@ ApiForgeModule.forRootAsync({
 })
 ```
 
-### Decorators
-
-| Decorator | Scope | Description |
-|---|---|---|
-| `@ApiForge(options?)` | Controller / Method | Apply filter + interceptor without going global |
-| `@ForgeMessage(msg)` | Controller / Method | Override the success message for that route |
-| `@ForgeRawResponse()` | Controller / Method | Skip envelope wrapping; return raw handler value |
-| `@ForgeMeta(extra)` | Controller / Method | Merge extra key-value pairs into `meta` |
-| `@ForgeDeprecated(notice?)` | Controller / Method | Mark route deprecated — adds `meta.deprecated`, optional `meta.deprecationNotice`, and `Deprecation: true` header |
-
 ### `ForgeValidationPipe`
 
-Drop-in replacement for NestJS `ValidationPipe`. Throws `ValidationException` with structured `details` instead of a string-message array. Supports nested objects (dot-notation fields).
+Drop-in replacement for NestJS `ValidationPipe`. Throws `ValidationException` with structured `details` instead of a string-message array. Supports nested objects using dot-notation field paths.
 
 ```typescript
-// main.ts
+// Use defaults
 app.useGlobalPipes(new ForgeValidationPipe());
 
 // Override defaults
@@ -226,7 +254,7 @@ app.useGlobalPipes(new ForgeValidationPipe({
 }));
 ```
 
-### `ApiResponseDto` — manual usage
+### `ApiResponseDto` — manual builders
 
 ```typescript
 import { ApiResponseDto } from 'nestjs-api-forge';
@@ -241,10 +269,10 @@ ApiResponseDto.error('Not found', 404, { code: 'NOT_FOUND' });
 
 ### Built-in Exceptions
 
-All extend `ApiException` → `HttpException`.
+All extend `ApiException` → `HttpException`. Pass an optional message and `details` array to any of them.
 
 | Class | Status | Code |
-|---|---|---|
+|-------|--------|------|
 | `BadRequestException` | 400 | `BAD_REQUEST` |
 | `UnauthorizedException` | 401 | `UNAUTHORIZED` |
 | `PaymentRequiredException` | 402 | `PAYMENT_REQUIRED` |
@@ -261,13 +289,13 @@ All extend `ApiException` → `HttpException`.
 
 ---
 
-## Usage Examples
+## 💡 Usage Examples
 
 ### Standard CRUD controller
 
 ```typescript
-import { Controller, Get, Post, Delete, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ForgeMessage, ForgeRawResponse, ForgeDeprecated, NotFoundException } from 'nestjs-api-forge';
+import { Controller, Get, Delete, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import { ForgeMessage, NotFoundException } from 'nestjs-api-forge';
 
 @Controller('users')
 export class UsersController {
@@ -275,7 +303,7 @@ export class UsersController {
   @ForgeMessage('User fetched successfully')
   findOne(@Param('id') id: number) {
     const user = this.usersService.findById(id);
-    if (!user) throw new NotFoundException('User');
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -284,6 +312,19 @@ export class UsersController {
   remove(@Param('id') id: number) {
     this.usersService.remove(id);
   }
+}
+```
+
+### Paginated list
+
+```typescript
+@Get()
+@ForgeRawResponse()
+findAll(@Query('page') page = '1', @Query('limit') limit = '10') {
+  const p = parseInt(page, 10);
+  const l = parseInt(limit, 10);
+  const { data, total } = this.usersService.findAll(p, l);
+  return ApiResponseDto.paginated(data, total, p, l, 'Users fetched');
 }
 ```
 
@@ -309,19 +350,6 @@ findAll() {
 }
 ```
 
-### Paginated list (raw response)
-
-```typescript
-@Get()
-@ForgeRawResponse()
-findAll(@Query('page') page = '1', @Query('limit') limit = '10') {
-  const p = parseInt(page, 10);
-  const l = parseInt(limit, 10);
-  const { data, total } = this.usersService.findAll(p, l);
-  return ApiResponseDto.paginated(data, total, p, l, 'Users fetched');
-}
-```
-
 ### Per-controller scope (no global module)
 
 ```typescript
@@ -342,12 +370,12 @@ health() {
 
 ### Correlation ID tracing
 
-Send `X-Request-ID: abc-123` in the request — the same ID appears in `meta.requestId` and is echoed in the `X-Request-ID` response header. Useful for distributed tracing across microservices.
+Send `X-Request-ID: abc-123` in the request — the same ID appears in `meta.requestId` and is echoed in the response header. Useful for distributed tracing across microservices.
 
 ```typescript
 ApiForgeModule.forRoot({
-  correlationIdHeader: 'x-request-id',  // or an array of headers
-  includeRequestId: true,               // generate UUID if header is absent
+  correlationIdHeader: 'x-request-id',   // or an array of headers
+  includeRequestId: true,                // generate UUID if header is absent
 })
 ```
 
@@ -367,31 +395,131 @@ throw ValidationException.fromConstraints({
 
 ---
 
-## Peer Dependencies
+## 📁 Project Structure
 
 ```
-@nestjs/common  ^9 | ^10 | ^11
-@nestjs/core    ^9 | ^10 | ^11
-reflect-metadata ^0.1 | ^0.2
-rxjs            ^7
+nestjs-api-forge/
+├── src/
+│   ├── api-forge.module.ts         # forRoot / forRootAsync registration
+│   ├── index.ts                    # Public exports
+│   ├── decorators/
+│   │   └── api-response.decorator.ts  # @ApiForge, @ForgeMessage, @ForgeRawResponse, @ForgeMeta, @ForgeDeprecated
+│   ├── dto/
+│   │   └── api-response.dto.ts        # ApiResponseDto static builders
+│   ├── exceptions/
+│   │   ├── api.exception.ts           # Base ApiException class
+│   │   └── validation.exception.ts    # ValidationException with field details
+│   ├── filters/
+│   │   └── global-exception.filter.ts # ForgeExceptionFilter
+│   ├── interceptors/
+│   │   └── response.interceptor.ts    # ForgeResponseInterceptor
+│   ├── interfaces/
+│   │   └── api-response.interface.ts  # TypeScript interfaces and ForgeOptions
+│   ├── pipes/
+│   │   └── forge-validation.pipe.ts   # ForgeValidationPipe
+│   └── utils/
+│       └── error-code.util.ts
+├── app/                            # Example NestJS app demonstrating the library
+│   └── src/
+│       ├── users/                  # Full CRUD example with pagination
+│       └── products/               # Per-controller @ApiForge example
+├── .github/
+│   ├── ISSUE_TEMPLATE/            # Bug report & feature request templates
+│   └── workflows/
+│       ├── publish.yml            # npm publish on tag push
+│       └── malware-scan.yml       # Security scan on every push
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+└── package.json
 ```
 
 ---
 
-## Changelog
+## 🛠️ Development
 
-### 1.1.0
-- `ForgeValidationPipe` — structured validation errors with nested field support
-- `@ForgeMeta(extra)` decorator — merge custom fields into response meta
-- `@ForgeDeprecated(notice?)` decorator — deprecation flag in meta + response header
-- `ApiResponseDto.accepted()` — 202 helper
+```bash
+# Clone the repo
+git clone https://github.com/mirzasaikatahmmed/nestjs-api-forge.git
+cd nestjs-api-forge
+
+# Install dependencies
+npm install
+
+# Build the library
+npm run build
+
+# Watch mode
+npm run build:watch
+
+# Format code
+npm run format
+
+# Run the example app
+cd app && npm install && npm run start:dev
+```
+
+---
+
+## 📦 Peer Dependencies
+
+```
+@nestjs/common   ^9 | ^10 | ^11
+@nestjs/core     ^9 | ^10 | ^11
+reflect-metadata ^0.1 | ^0.2
+rxjs             ^7
+```
+
+---
+
+## 📋 Changelog
+
+### v1.1.0
+- `ForgeValidationPipe` — structured validation errors with nested field support (dot-notation)
+- `@ForgeMeta(extra)` — merge custom fields into response `meta` per route or controller
+- `@ForgeDeprecated(notice?)` — deprecation flag in `meta` + `Deprecation: true` response header
+- `ApiResponseDto.accepted()` — 202 Accepted helper
 - Correlation ID passthrough (`correlationIdHeader` option)
 - Response time measurement (`includeResponseTime` option)
 - `forRootAsync` fix — options factory now runs once instead of twice
 - 3 new exceptions: `MethodNotAllowedException`, `PaymentRequiredException`, `GatewayTimeoutException`
 
+### v1.0.4
+- Decorators: `@ForgeMessage`, `@ForgeRawResponse`, `@ForgeMeta`, `@ForgeDeprecated`, `@ApiForge`
+- `ForgeValidationPipe` with structured field-level errors
+- Response metadata support (`includePath`, `includeTimestamp`, `includeRequestId`, `includeResponseTime`)
+
+### v1.0.3
+- Bump version, update repository URL
+
+### v1.0.0
+- Initial release — `ApiForgeModule.forRoot()`, `ForgeExceptionFilter`, `ForgeResponseInterceptor`, `ApiResponseDto`, and 10 typed exceptions
+
 ---
 
-## License
+## 🤝 Contributing
 
-MIT
+Pull requests are welcome! For major changes, please open an issue first to discuss your approach.
+
+1. Fork the repository
+2. Create your branch: `git checkout -b feat/your-feature`
+3. Make your changes and run `npm run format`
+4. Push and open a PR against `main`
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating. All contributors are listed in [CONTRIBUTORS.md](CONTRIBUTORS.md).
+
+---
+
+## 💛 Support
+
+If NestJS API Forge saves you boilerplate, consider supporting the project:
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor%20on%20GitHub-%E2%9D%A4-ea4aaa?logo=github-sponsors&style=for-the-badge)](https://github.com/sponsors/mirzasaikatahmmed)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-☕-yellow?logo=buy-me-a-coffee&style=for-the-badge)](https://buymeacoffee.com/saikat)
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Mirza Saikat Ahmmed](https://github.com/mirzasaikatahmmed)
+
+</div>
