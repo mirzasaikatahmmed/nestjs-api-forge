@@ -1,6 +1,6 @@
 {
   "name": "nestjs-api-forge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Standardized API response formatting, error handling, and exception filters for NestJS applications",
   "author": "Saikat",
   "license": "MIT",
