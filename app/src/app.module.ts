@@ -12,6 +12,8 @@ import { ProductsModule } from './products/products.module';
       includePath: true,
       includeTimestamp: true,
       includeRequestId: true,
+      includeResponseTime: true,
+      correlationIdHeader: 'x-request-id',
     }),
     UsersModule,
     ProductsModule,

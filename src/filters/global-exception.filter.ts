@@ -24,7 +24,10 @@ export class ForgeExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const meta = this.buildMeta(request);
+    const requestId = this.resolveRequestId(request);
+    if (requestId) response.setHeader('x-request-id', requestId);
+
+    const meta = this.buildMeta(request, requestId);
     const errorResponse = this.buildErrorResponse(exception, meta);
 
     if (errorResponse.statusCode >= 500) {
@@ -41,22 +44,36 @@ export class ForgeExceptionFilter implements ExceptionFilter {
     response.status(errorResponse.statusCode).json(errorResponse);
   }
 
-  private buildMeta(request: Request) {
-    const {
-      includePath = true,
-      includeTimestamp = true,
-      includeRequestId = false,
-      version,
-    } = this.options;
+  private resolveRequestId(request: Request): string | undefined {
+    const { includeRequestId = false, correlationIdHeader } = this.options;
+    if (!includeRequestId && !correlationIdHeader) return undefined;
+
+    const headers =
+      typeof correlationIdHeader === 'string'
+        ? [correlationIdHeader]
+        : Array.isArray(correlationIdHeader)
+          ? correlationIdHeader
+          : ['x-request-id', 'x-correlation-id'];
+
+    for (const h of headers) {
+      const val = request.headers[h.toLowerCase()];
+      if (typeof val === 'string' && val) return val;
+    }
+
+    return includeRequestId ? randomUUID() : undefined;
+  }
+
+  private buildMeta(request: Request, requestId: string | undefined) {
+    const { includePath = true, includeTimestamp = true, version } = this.options;
     return {
       ...(includeTimestamp && { timestamp: new Date().toISOString() }),
       ...(includePath && { path: request.url }),
       ...(version && { version }),
-      ...(includeRequestId && { requestId: randomUUID() }),
+      ...(requestId && { requestId }),
     };
   }
 
-  private buildErrorResponse(exception: unknown, meta: Record<string, string>) {
+  private buildErrorResponse(exception: unknown, meta: Record<string, unknown>) {
     if (exception instanceof ApiException) {
       return ApiResponseDto.error(
         exception.message,

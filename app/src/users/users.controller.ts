@@ -22,6 +22,8 @@ import {
 import {
   ForgeMessage,
   ForgeRawResponse,
+  ForgeDeprecated,
+  ForgeMeta,
   ApiResponseDto,
 } from 'nestjs-api-forge';
 import { UsersService } from './users.service';
@@ -35,6 +37,7 @@ export class UsersController {
 
   @Get()
   @ForgeRawResponse()
+  @ForgeMeta({ note: 'pagination handled manually via ApiResponseDto.paginated()' })
   @ApiOperation({ summary: 'List all users (paginated)' })
   @ApiQuery({ name: 'page', required: false, example: 1 })
   @ApiQuery({ name: 'limit', required: false, example: 10 })
@@ -47,6 +50,15 @@ export class UsersController {
     const l = parseInt(limit, 10);
     const { data, total } = this.usersService.findAll(p, l);
     return ApiResponseDto.paginated(data, total, p, l, 'Users fetched successfully');
+  }
+
+  @Get('legacy')
+  @ForgeDeprecated('Use GET /api/users with pagination instead')
+  @ForgeMessage('Users fetched (legacy)')
+  @ApiOperation({ summary: 'Legacy: list all users without pagination (deprecated)' })
+  @ApiResponse({ status: 200, description: 'All users — sets Deprecation: true header' })
+  findAllLegacy() {
+    return this.usersService.findAll(1, 1000).data;
   }
 
   @Get(':id')

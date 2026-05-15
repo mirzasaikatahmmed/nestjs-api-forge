@@ -34,6 +34,14 @@ export class ApiResponseDto {
     return ApiResponseDto.success(data, message, 201, meta);
   }
 
+  static accepted<T>(
+    data: T,
+    message = 'Request accepted for processing',
+    meta: Partial<ApiMeta> = {},
+  ): ApiSuccessResponse<T> {
+    return ApiResponseDto.success(data, message, 202, meta);
+  }
+
   static noContent(
     message = 'No content',
     meta: Partial<ApiMeta> = {},

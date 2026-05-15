@@ -8,11 +8,13 @@ import { Reflector } from '@nestjs/core';
 import { randomUUID } from 'crypto';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { ApiResponseDto } from '../dto/api-response.dto';
 import { ForgeOptions } from '../interfaces/api-response.interface';
 import {
+  FORGE_DEPRECATED_KEY,
   FORGE_MESSAGE_KEY,
+  FORGE_META_KEY,
   FORGE_RAW_RESPONSE_KEY,
 } from '../decorators/api-response.decorator';
 
@@ -31,15 +33,30 @@ export class ForgeResponseInterceptor implements NestInterceptor {
 
     if (isRaw) return next.handle();
 
+    const start = Date.now();
+
     const customMessage = this.reflector.getAllAndOverride<string>(
       FORGE_MESSAGE_KEY,
       [context.getHandler(), context.getClass()],
     );
 
-    const request = context.switchToHttp().getRequest<Request>();
-    const statusCode = context.switchToHttp().getResponse().statusCode;
+    const extraMeta = this.reflector.getAllAndOverride<Record<string, unknown>>(
+      FORGE_META_KEY,
+      [context.getHandler(), context.getClass()],
+    ) ?? {};
 
-    const meta = this.buildMeta(request);
+    const deprecatedValue = this.reflector.getAllAndOverride<true | string>(
+      FORGE_DEPRECATED_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+
+    const request = context.switchToHttp().getRequest<Request>();
+    const response = context.switchToHttp().getResponse<Response>();
+    const statusCode = response.statusCode;
+
+    const requestId = this.resolveRequestId(request);
+    if (requestId) response.setHeader('x-request-id', requestId);
+    if (deprecatedValue) response.setHeader('Deprecation', 'true');
 
     return next.handle().pipe(
       map((data) => {
@@ -48,23 +65,55 @@ export class ForgeResponseInterceptor implements NestInterceptor {
           this.options.defaultSuccessMessage ??
           'Request successful';
 
+        const deprecationMeta = deprecatedValue
+          ? {
+              deprecated: true as const,
+              ...(typeof deprecatedValue === 'string' && {
+                deprecationNotice: deprecatedValue,
+              }),
+            }
+          : {};
+
+        const meta = {
+          ...this.buildMeta(request, requestId),
+          ...(this.options.includeResponseTime && {
+            responseTime: `${Date.now() - start}ms`,
+          }),
+          ...deprecationMeta,
+          ...extraMeta,
+        };
+
         return ApiResponseDto.success(data, message, statusCode, meta);
       }),
     );
   }
 
-  private buildMeta(request: Request) {
-    const {
-      includePath = true,
-      includeTimestamp = true,
-      includeRequestId = false,
-      version,
-    } = this.options;
+  private resolveRequestId(request: Request): string | undefined {
+    const { includeRequestId = false, correlationIdHeader } = this.options;
+    if (!includeRequestId && !correlationIdHeader) return undefined;
+
+    const headers =
+      typeof correlationIdHeader === 'string'
+        ? [correlationIdHeader]
+        : Array.isArray(correlationIdHeader)
+          ? correlationIdHeader
+          : ['x-request-id', 'x-correlation-id'];
+
+    for (const h of headers) {
+      const val = request.headers[h.toLowerCase()];
+      if (typeof val === 'string' && val) return val;
+    }
+
+    return includeRequestId ? randomUUID() : undefined;
+  }
+
+  private buildMeta(request: Request, requestId: string | undefined) {
+    const { includePath = true, includeTimestamp = true, version } = this.options;
     return {
       ...(includeTimestamp && { timestamp: new Date().toISOString() }),
       ...(includePath && { path: request.url }),
       ...(version && { version }),
-      ...(includeRequestId && { requestId: randomUUID() }),
+      ...(requestId && { requestId }),
     };
   }
 }
