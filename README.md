@@ -473,23 +473,29 @@ rxjs             ^7
 
 ## 📋 Changelog
 
-### v1.1.0
+### v1.0.6 — Current
+- **Changelog updated** — all versions documented with accurate entries aligned to npm release history
+
+### v1.0.5
+- **Open source documentation** — full README rewrite with badges, "What it does" table, response shape examples, and complete API reference
+- **Community health files** — `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTORS.md`, `REPOSITORY_RULES.md`
+- **GitHub templates** — bug report and feature request issue templates, `FUNDING.yml`, `CODEOWNERS`
+- **ESLint setup** — ESLint v10 flat config (`eslint.config.mjs`) with `@typescript-eslint` integration; `npm run lint` now works out of the box
+
+### v1.0.4
 - `ForgeValidationPipe` — structured validation errors with nested field support (dot-notation)
 - `@ForgeMeta(extra)` — merge custom fields into response `meta` per route or controller
 - `@ForgeDeprecated(notice?)` — deprecation flag in `meta` + `Deprecation: true` response header
+- `@ForgeMessage`, `@ForgeRawResponse`, `@ApiForge` decorators
 - `ApiResponseDto.accepted()` — 202 Accepted helper
 - Correlation ID passthrough (`correlationIdHeader` option)
 - Response time measurement (`includeResponseTime` option)
 - `forRootAsync` fix — options factory now runs once instead of twice
 - 3 new exceptions: `MethodNotAllowedException`, `PaymentRequiredException`, `GatewayTimeoutException`
-
-### v1.0.4
-- Decorators: `@ForgeMessage`, `@ForgeRawResponse`, `@ForgeMeta`, `@ForgeDeprecated`, `@ApiForge`
-- `ForgeValidationPipe` with structured field-level errors
 - Response metadata support (`includePath`, `includeTimestamp`, `includeRequestId`, `includeResponseTime`)
 
 ### v1.0.3
-- Bump version, update repository URL
+- Update repository URL format in `package.json`
 
 ### v1.0.0
 - Initial release — `ApiForgeModule.forRoot()`, `ForgeExceptionFilter`, `ForgeResponseInterceptor`, `ApiResponseDto`, and 10 typed exceptions
