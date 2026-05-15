@@ -5,6 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { randomUUID } from 'crypto';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Request } from 'express';
@@ -53,11 +54,17 @@ export class ForgeResponseInterceptor implements NestInterceptor {
   }
 
   private buildMeta(request: Request) {
-    const { includePath = true, includeTimestamp = true, version } = this.options;
+    const {
+      includePath = true,
+      includeTimestamp = true,
+      includeRequestId = false,
+      version,
+    } = this.options;
     return {
       ...(includeTimestamp && { timestamp: new Date().toISOString() }),
       ...(includePath && { path: request.url }),
       ...(version && { version }),
+      ...(includeRequestId && { requestId: randomUUID() }),
     };
   }
 }

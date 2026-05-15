@@ -57,6 +57,8 @@ export interface ForgeOptions {
   includePath?: boolean;
   /** Include the timestamp in every response meta. Default: true */
   includeTimestamp?: boolean;
+  /** Attach a generated UUID to every response meta as `requestId`. Default: false */
+  includeRequestId?: boolean;
   /** Default API version string added to meta */
   version?: string;
   /** Custom success message when none is provided */

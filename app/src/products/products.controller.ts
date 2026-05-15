@@ -50,7 +50,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Create a new product' })
   @ApiBody({ type: CreateProductDto })
   @ApiResponse({ status: 201, description: 'Created product in standard envelope' })
-  @ApiResponse({ status: 400, description: 'Invalid price — forge BadRequestException with field details' })
+  @ApiResponse({ status: 400, description: 'Validation error — ValidationPipe field details' })
   create(@Body() dto: CreateProductDto) {
     return this.productsService.create(dto);
   }

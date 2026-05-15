@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { ApiException } from '../exceptions/api.exception';
 import { ApiResponseDto } from '../dto/api-response.dto';
@@ -41,11 +42,17 @@ export class ForgeExceptionFilter implements ExceptionFilter {
   }
 
   private buildMeta(request: Request) {
-    const { includePath = true, includeTimestamp = true, version } = this.options;
+    const {
+      includePath = true,
+      includeTimestamp = true,
+      includeRequestId = false,
+      version,
+    } = this.options;
     return {
       ...(includeTimestamp && { timestamp: new Date().toISOString() }),
       ...(includePath && { path: request.url }),
       ...(version && { version }),
+      ...(includeRequestId && { requestId: randomUUID() }),
     };
   }
 
@@ -104,9 +111,12 @@ export class ForgeExceptionFilter implements ExceptionFilter {
     if (!Array.isArray(r['message'])) return [];
 
     return (r['message'] as string[]).map((msg) => {
-      const parts = msg.split(' ');
-      const field = parts.shift();
-      return { field, message: parts.join(' ') };
+      const spaceIndex = msg.indexOf(' ');
+      if (spaceIndex === -1) return { message: msg };
+      return {
+        field: msg.slice(0, spaceIndex),
+        message: msg.slice(spaceIndex + 1),
+      };
     });
   }
 }

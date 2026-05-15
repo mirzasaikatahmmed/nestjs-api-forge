@@ -65,7 +65,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'Created user wrapped in standard envelope' })
-  @ApiResponse({ status: 400, description: 'Validation error — forge ValidationException with field details' })
+  @ApiResponse({ status: 400, description: 'Validation error — ValidationPipe with field details' })
   @ApiResponse({ status: 409, description: 'Email already registered — forge ConflictException' })
   create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);

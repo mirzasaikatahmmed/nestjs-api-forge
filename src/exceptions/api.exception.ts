@@ -70,3 +70,21 @@ export class ServiceUnavailableException extends ApiException {
     super(message, HttpStatus.SERVICE_UNAVAILABLE, 'SERVICE_UNAVAILABLE');
   }
 }
+
+export class MethodNotAllowedException extends ApiException {
+  constructor(message = 'Method not allowed') {
+    super(message, HttpStatus.METHOD_NOT_ALLOWED, 'METHOD_NOT_ALLOWED');
+  }
+}
+
+export class PaymentRequiredException extends ApiException {
+  constructor(message = 'Payment required') {
+    super(message, HttpStatus.PAYMENT_REQUIRED, 'PAYMENT_REQUIRED');
+  }
+}
+
+export class GatewayTimeoutException extends ApiException {
+  constructor(message = 'Gateway timeout') {
+    super(message, HttpStatus.GATEWAY_TIMEOUT, 'GATEWAY_TIMEOUT');
+  }
+}

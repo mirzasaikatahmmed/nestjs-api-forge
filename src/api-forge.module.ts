@@ -9,10 +9,6 @@ export const FORGE_OPTIONS = 'FORGE_OPTIONS';
 @Global()
 @Module({})
 export class ApiForgeModule {
-  /**
-   * Register globally — applies the exception filter and response interceptor
-   * to every route in the application.
-   */
   static forRoot(options: ForgeOptions = {}): DynamicModule {
     const optionsProvider: Provider = {
       provide: FORGE_OPTIONS,
@@ -42,36 +38,39 @@ export class ApiForgeModule {
     };
   }
 
-  /**
-   * Register with async options — useful when options depend on a config service.
-   */
   static forRootAsync(asyncOptions: {
     useFactory: (...args: any[]) => ForgeOptions | Promise<ForgeOptions>;
     inject?: any[];
     imports?: any[];
   }): DynamicModule {
+    const optionsProvider: Provider = {
+      provide: FORGE_OPTIONS,
+      useFactory: asyncOptions.useFactory,
+      inject: asyncOptions.inject ?? [],
+    };
+
     const exceptionFilterProvider: Provider = {
       provide: APP_FILTER,
-      useFactory: async (...args: any[]) => {
-        const options = await asyncOptions.useFactory(...args);
-        return new ForgeExceptionFilter(options);
-      },
-      inject: asyncOptions.inject ?? [],
+      useFactory: (options: ForgeOptions) => new ForgeExceptionFilter(options),
+      inject: [FORGE_OPTIONS],
     };
 
     const responseInterceptorProvider: Provider = {
       provide: APP_INTERCEPTOR,
-      useFactory: async (reflector: Reflector, ...args: any[]) => {
-        const options = await asyncOptions.useFactory(...args);
-        return new ForgeResponseInterceptor(reflector, options);
-      },
-      inject: [Reflector, ...(asyncOptions.inject ?? [])],
+      useFactory: (reflector: Reflector, options: ForgeOptions) =>
+        new ForgeResponseInterceptor(reflector, options),
+      inject: [Reflector, FORGE_OPTIONS],
     };
 
     return {
       module: ApiForgeModule,
       imports: asyncOptions.imports ?? [],
-      providers: [exceptionFilterProvider, responseInterceptorProvider],
+      providers: [
+        optionsProvider,
+        exceptionFilterProvider,
+        responseInterceptorProvider,
+      ],
+      exports: [FORGE_OPTIONS],
     };
   }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import {
   NotFoundException,
   ConflictException,
-  ValidationException,
 } from 'nestjs-api-forge';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -37,14 +36,6 @@ export class UsersService {
   }
 
   create(dto: CreateUserDto): User {
-    // Validate required fields
-    const errors: Record<string, Record<string, string>> = {};
-    if (!dto.name) errors.name = { required: 'Name is required' };
-    if (!dto.email) errors.email = { required: 'Email is required' };
-    if (!dto.age) errors.age = { required: 'Age is required' };
-    if (Object.keys(errors).length) throw ValidationException.fromConstraints(errors);
-
-    // Check for duplicate email
     const exists = this.users.find((u) => u.email === dto.email);
     if (exists) throw new ConflictException(`Email "${dto.email}" is already registered`);
 

@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  NotFoundException,
-  BadRequestException,
-} from 'nestjs-api-forge';
+import { NotFoundException } from 'nestjs-api-forge';
 import { CreateProductDto } from './dto/create-product.dto';
 
 export interface Product {
@@ -32,11 +29,6 @@ export class ProductsService {
   }
 
   create(dto: CreateProductDto): Product {
-    if (dto.price <= 0) {
-      throw new BadRequestException('Price must be greater than zero', [
-        { field: 'price', message: 'Must be a positive number', value: dto.price },
-      ]);
-    }
     const product: Product = { id: this.nextId++, ...dto };
     this.products.push(product);
     return product;
