@@ -32,6 +32,9 @@ Thumbs.db
 
 # npm pack output
 *.tgz
+
+# npm auth token — never commit this
+.npmrc
 config.bat
 temp_auto_push.bat
 temp_interactive_push.bat
