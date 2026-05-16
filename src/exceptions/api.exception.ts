@@ -88,3 +88,63 @@ export class GatewayTimeoutException extends ApiException {
     super(message, HttpStatus.GATEWAY_TIMEOUT, 'GATEWAY_TIMEOUT');
   }
 }
+
+export class NotAcceptableException extends ApiException {
+  constructor(message = 'Not acceptable') {
+    super(message, HttpStatus.NOT_ACCEPTABLE, 'NOT_ACCEPTABLE');
+  }
+}
+
+export class RequestTimeoutException extends ApiException {
+  constructor(message = 'Request timeout') {
+    super(message, HttpStatus.REQUEST_TIMEOUT, 'REQUEST_TIMEOUT');
+  }
+}
+
+export class GoneException extends ApiException {
+  constructor(message = 'Resource no longer available') {
+    super(message, HttpStatus.GONE, 'GONE');
+  }
+}
+
+export class PayloadTooLargeException extends ApiException {
+  constructor(message = 'Payload too large') {
+    super(message, HttpStatus.PAYLOAD_TOO_LARGE, 'PAYLOAD_TOO_LARGE');
+  }
+}
+
+export class UnsupportedMediaTypeException extends ApiException {
+  constructor(message = 'Unsupported media type') {
+    super(message, HttpStatus.UNSUPPORTED_MEDIA_TYPE, 'UNSUPPORTED_MEDIA_TYPE');
+  }
+}
+
+export class LockedException extends ApiException {
+  constructor(message = 'Resource is locked') {
+    super(message, HttpStatus.LOCKED, 'LOCKED');
+  }
+}
+
+export class FailedDependencyException extends ApiException {
+  constructor(message = 'Failed dependency') {
+    super(message, HttpStatus.FAILED_DEPENDENCY, 'FAILED_DEPENDENCY');
+  }
+}
+
+export class PreconditionRequiredException extends ApiException {
+  constructor(message = 'Precondition required') {
+    super(message, HttpStatus.PRECONDITION_REQUIRED, 'PRECONDITION_REQUIRED');
+  }
+}
+
+export class NotImplementedException extends ApiException {
+  constructor(message = 'Not implemented') {
+    super(message, HttpStatus.NOT_IMPLEMENTED, 'NOT_IMPLEMENTED');
+  }
+}
+
+export class BadGatewayException extends ApiException {
+  constructor(message = 'Bad gateway') {
+    super(message, HttpStatus.BAD_GATEWAY, 'BAD_GATEWAY');
+  }
+}

@@ -473,7 +473,15 @@ rxjs             ^7
 
 ## 📋 Changelog
 
-### v1.0.6 — Current
+### v1.0.7 — Current
+
+- **10 new HTTP exception classes** — `NotAcceptableException` (406), `RequestTimeoutException` (408), `GoneException` (410), `PayloadTooLargeException` (413), `UnsupportedMediaTypeException` (415), `LockedException` (423), `FailedDependencyException` (424), `PreconditionRequiredException` (428), `NotImplementedException` (501), `BadGatewayException` (502)
+- **`ForgeHealthModule`** — configurable `/health` endpoint with custom checks, uptime, memory stats, and Forge-formatted responses; throws 503 automatically when any check fails
+- **Updated error-code map** — added `LOCKED`, `FAILED_DEPENDENCY`, `PRECONDITION_REQUIRED` mappings
+
+> Full history: [CHANGELOG.md](CHANGELOG.md)
+
+### v1.0.6
 - **Changelog updated** — all versions documented with accurate entries aligned to npm release history
 
 ### v1.0.5
