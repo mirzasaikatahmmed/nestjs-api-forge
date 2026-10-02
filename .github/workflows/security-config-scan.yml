@@ -9,7 +9,7 @@ jobs:
     name: Scan for config-file malware
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Scan for known config-malware IOCs
         run: |
