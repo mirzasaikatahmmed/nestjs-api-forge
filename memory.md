@@ -7,7 +7,7 @@
 TypeScript (CommonJS, ES2020), NestJS peer deps (9–11). Source in `src/` (decorators, dto, exceptions, filters, health, interceptors, interfaces, pipes, utils). `app/` is a demo app, excluded from the build. Output `dist/` is the only published folder.
 
 ## Current state
-- v1.0.8 prepared on branch `ci/provenance-tag-release` (not committed yet): tag-triggered release workflow with provenance, `exports`/`engines`/`publishConfig`, `lint:check`/`typecheck`/`clean` scripts.
+- v1.0.9 released via tag push: tag-triggered release workflow with provenance, actions pinned to commit SHAs (checkout v7.0.1, setup-node v7.0.0).
 - No tests yet (Jest suggested as next step).
 
 ## Key decisions
@@ -23,4 +23,4 @@ TypeScript (CommonJS, ES2020), NestJS peer deps (9–11). Source in `src/` (deco
 `npm ci`, `npm run build`, `npm run lint:check`, `npm run typecheck`. Release steps: see CONTRIBUTING.md.
 
 ## Last updated
-2026-10-03 — release workflow and package.json improvements, version bump to 1.0.8.
+2026-10-03 — bump to 1.0.9 (CI-only release: actions upgraded and SHA-pinned).
