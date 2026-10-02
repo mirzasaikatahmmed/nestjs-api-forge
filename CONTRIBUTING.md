@@ -205,6 +205,12 @@ Keep the subject line under 72 characters. Add a body if the *why* is non-obviou
 4. A maintainer will review within a few days. Address feedback and push to the same branch — the PR updates automatically.
 5. Once approved, the maintainer will merge and include your change in the next npm release.
 
+### Releasing (maintainers)
+
+1. Bump the version (`npm version patch --no-git-tag-version`) and update `CHANGELOG.md`, then merge to `main`.
+2. Tag the merge commit and push the tag: `git tag v<version> && git push origin v<version>`.
+3. The `Build & Publish` workflow verifies the tag matches `package.json`, runs lint, typecheck, and build, then publishes to npm with provenance. It needs the `NPM_TOKEN` repo secret.
+
 ---
 
 ## Reporting Bugs

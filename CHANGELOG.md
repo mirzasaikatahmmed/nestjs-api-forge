@@ -4,6 +4,15 @@ All notable changes to **nestjs-api-forge** are documented here.
 
 ---
 
+## [1.0.8] — 2026-10-03
+
+### Changed
+- **Release workflow** — publishing now triggers on `v*` tags (not every push to `main`), verifies the tag matches `package.json`, and runs lint, typecheck, and build before `npm publish --provenance`
+- **`package.json`** — added `exports`, `engines` (`node >=18`), and `publishConfig` (`access: public`, `provenance: true`); `prepublishOnly` now cleans `dist` before building
+- **Scripts** — added `lint:check` (no auto-fix), `typecheck`, and `clean`
+
+---
+
 ## [1.0.7] — 2026-05-16
 
 ### Added
