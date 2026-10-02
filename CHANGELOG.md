@@ -4,6 +4,13 @@ All notable changes to **nestjs-api-forge** are documented here.
 
 ---
 
+## [1.0.9] — 2026-10-03
+
+### Changed
+- **CI** — upgraded `actions/checkout` and `actions/setup-node` to v7 and pinned both to commit SHAs. No runtime or API changes
+
+---
+
 ## [1.0.8] — 2026-10-03
 
 ### Changed
