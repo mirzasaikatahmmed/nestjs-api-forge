@@ -1,20 +1,37 @@
 {
   "name": "nestjs-api-forge",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Standardized API response formatting, error handling, and exception filters for NestJS applications",
   "author": "Mirza Saikat Ahmmed",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist/**/*"
   ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json --watch",
-    "lint": "eslint 'src/**/*.ts' --fix",
-    "format": "prettier --write 'src/**/*.ts'",
-    "prepublishOnly": "npm run build"
+    "clean": "node -e \"require(\\\"fs\\\").rmSync(\\\"dist\\\",{recursive:true,force:true})\"",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "lint:check": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
     "nestjs",
