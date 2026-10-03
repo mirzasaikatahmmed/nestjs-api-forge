@@ -192,19 +192,24 @@ Match the style of the surrounding code for any area not covered by Prettier.
 
 ## Commit Guidelines
 
-Commits in this project use emoji prefixes. Follow this guide when writing commit messages manually:
+This project uses [Conventional Commits](https://www.conventionalcommits.org). Pull request titles are checked in CI, so use the same format for the PR title:
 
 | Prefix | When to use |
 |--------|------------|
-| `✨ feat:` | New feature or decorator |
-| `🐛 fix:` | Bug fix |
-| `🔒 security:` | Security improvement |
-| `♻️ refactor:` | Code change with no behaviour change |
-| `📝 docs:` | Documentation only |
-| `🏗️ build:` | Build system or dependency change |
-| `✅ test:` | Adding or fixing tests |
-| `🚀 ci:` | CI/CD changes |
-| `📦 chore:` | Version bump or housekeeping |
+| `feat:` | New feature or decorator |
+| `fix:` | Bug fix |
+| `security:` | Security improvement |
+| `refactor:` | Code change with no behaviour change |
+| `perf:` | Performance improvement |
+| `docs:` | Documentation only |
+| `style:` | Formatting only |
+| `build:` | Build system or dependency change |
+| `test:` | Adding or fixing tests |
+| `ci:` | CI/CD changes |
+| `chore:` | Version bump or housekeeping |
+| `revert:` | Reverting an earlier change |
+
+An optional scope goes in brackets, for example `fix(health): return 503 when a check fails`. Add `!` before the colon for breaking changes.
 
 Keep the subject line under 72 characters. Add a body if the *why* is non-obvious.
 
