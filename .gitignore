@@ -35,3 +35,6 @@ Thumbs.db
 
 # npm auth token — never commit this
 .npmrc
+
+# Local AI/workflow notes
+memory.md
