@@ -4,6 +4,22 @@ All notable changes to **nestjs-api-forge** are documented here.
 
 ---
 
+## [1.0.10] — 2026-10-03
+
+### Fixed
+- **`LockedException` on NestJS 9 and 10** — `HttpStatus.LOCKED` only exists in `@nestjs/common` >= 11, so the exception had an `undefined` status and the package failed to typecheck against Nest 9/10. Status `423` is now used directly (also in the status-to-error-code map)
+
+### Added
+- **`LICENSE`** (MIT) is now included in the published package
+
+### Changed
+- **CI** — pull requests run lint, typecheck, build, and a Jest suite (71+ tests) on Node 18/20/22 and against NestJS 9, 10, and 11
+
+### Known issues
+- `includeTimestamp: false` does not remove `meta.timestamp` yet (covered by `it.failing` tests)
+
+---
+
 ## [1.0.9] — 2026-10-03
 
 ### Changed
