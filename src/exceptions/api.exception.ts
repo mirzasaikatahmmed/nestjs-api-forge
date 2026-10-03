@@ -121,7 +121,8 @@ export class UnsupportedMediaTypeException extends ApiException {
 
 export class LockedException extends ApiException {
   constructor(message = 'Resource is locked') {
-    super(message, HttpStatus.LOCKED, 'LOCKED');
+    // HttpStatus.LOCKED only exists in @nestjs/common >= 11
+    super(message, 423 as HttpStatus, 'LOCKED');
   }
 }
 

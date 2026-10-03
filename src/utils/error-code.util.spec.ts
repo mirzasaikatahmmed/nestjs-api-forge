@@ -4,6 +4,7 @@ describe('error-code.util', () => {
   it.each([
     [400, 'BAD_REQUEST'],
     [404, 'NOT_FOUND'],
+    [423, 'LOCKED'],
     [429, 'TOO_MANY_REQUESTS'],
     [500, 'INTERNAL_SERVER_ERROR'],
     [504, 'GATEWAY_TIMEOUT'],
