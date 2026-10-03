@@ -66,7 +66,8 @@ export class ForgeExceptionFilter implements ExceptionFilter {
   private buildMeta(request: Request, requestId: string | undefined) {
     const { includePath = true, includeTimestamp = true, version } = this.options;
     return {
-      ...(includeTimestamp && { timestamp: new Date().toISOString() }),
+      // `undefined` overrides ApiResponseDto's default timestamp and is dropped from the JSON body
+      timestamp: includeTimestamp ? new Date().toISOString() : undefined,
       ...(includePath && { path: request.url }),
       ...(version && { version }),
       ...(requestId && { requestId }),

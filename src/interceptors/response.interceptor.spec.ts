@@ -74,13 +74,19 @@ describe('ForgeResponseInterceptor', () => {
     expect(res.meta.responseTime).toMatch(/^\d+ms$/);
   });
 
-  // Known bug: ApiResponseDto.success always adds `timestamp`, so the option is ignored.
-  // Remove `.failing` once fixed.
-  it.failing('omits the timestamp when includeTimestamp is false', async () => {
+  it('omits the timestamp from the JSON body when includeTimestamp is false', async () => {
     const { run } = setup({ includeTimestamp: false });
     const res = (await run()) as { meta: Record<string, unknown> };
 
     expect(res.meta.timestamp).toBeUndefined();
+    expect(JSON.parse(JSON.stringify(res)).meta).not.toHaveProperty('timestamp');
+  });
+
+  it('includes an ISO timestamp by default', async () => {
+    const { run } = setup();
+    const res = (await run()) as { meta: { timestamp: string } };
+
+    expect(new Date(res.meta.timestamp).toISOString()).toBe(res.meta.timestamp);
   });
 
   it('marks deprecated routes in meta and the Deprecation header', async () => {
