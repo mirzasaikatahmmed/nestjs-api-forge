@@ -26,6 +26,13 @@ describe('ApiException subclasses', () => {
     expect(ex.code).toBe('NOT_FOUND');
   });
 
+  it('LockedException uses status 423 on every supported Nest version', () => {
+    const ex = new exceptions.LockedException();
+
+    expect(ex.getStatus()).toBe(423);
+    expect(ex.code).toBe('LOCKED');
+  });
+
   it('keeps details on exceptions that accept them', () => {
     const details = [{ field: 'email', message: 'invalid' }];
     const ex = new exceptions.BadRequestException('Bad input', details);
