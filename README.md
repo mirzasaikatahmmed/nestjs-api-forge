@@ -6,7 +6,7 @@
 
 [![npm version](https://img.shields.io/npm/v/nestjs-api-forge?color=blue&label=npm)](https://www.npmjs.com/package/nestjs-api-forge)
 [![npm downloads](https://img.shields.io/npm/dm/nestjs-api-forge?color=green)](https://www.npmjs.com/package/nestjs-api-forge)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![NestJS](https://img.shields.io/badge/NestJS-%3E%3D9-red)](https://nestjs.com)
 [![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178c6)](https://www.typescriptlang.org)
 [![CI](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/publish.yml?label=build)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/publish.yml)
@@ -430,6 +430,7 @@ nestjs-api-forge/
 │       └── malware-scan.yml       # Security scan on every push
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
+├── LICENSE
 └── package.json
 ```
 
@@ -486,7 +487,7 @@ rxjs             ^7
 
 ### v1.0.5
 - **Open source documentation** — full README rewrite with badges, "What it does" table, response shape examples, and complete API reference
-- **Community health files** — `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTORS.md`, `REPOSITORY_RULES.md`
+- **Community health files** — `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
 - **GitHub templates** — bug report and feature request issue templates, `FUNDING.yml`, `CODEOWNERS`
 - **ESLint setup** — ESLint v10 flat config (`eslint.config.mjs`) with `@typescript-eslint` integration; `npm run lint` now works out of the box
 
@@ -519,7 +520,7 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 3. Make your changes and run `npm run format`
 4. Push and open a PR against `main`
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating. All contributors are listed in [CONTRIBUTORS.md](CONTRIBUTORS.md).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating. See the [contributors graph](https://github.com/mirzasaikatahmmed/nestjs-api-forge/graphs/contributors) for everyone who has helped.
 
 ---
 
