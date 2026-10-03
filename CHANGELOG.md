@@ -4,6 +4,16 @@ All notable changes to **nestjs-api-forge** are documented here.
 
 ---
 
+## [1.0.11] — 2026-10-03
+
+### Fixed
+- **`includeTimestamp: false`** now removes `meta.timestamp` from success and error responses (it was always added by `ApiResponseDto`, so the option had no effect)
+
+### Changed
+- **Repository** — added `SECURITY.md`, a pull request template, CodeQL scanning, Dependabot for npm and GitHub Actions, GitHub Releases on tag, and Conventional Commit PR title checks. No runtime or API changes
+
+---
+
 ## [1.0.10] — 2026-10-03
 
 ### Fixed
