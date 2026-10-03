@@ -60,6 +60,12 @@ npm run build
 npm run build:watch
 ```
 
+### Test
+
+```bash
+npm test
+```
+
 ---
 
 ## Project Structure
@@ -155,9 +161,16 @@ Match the style of the surrounding code for any area not covered by Prettier.
    npm run build
    ```
 
-4. Test manually using the example app in `app/`.
+4. Run the tests, and add or update tests for your change (`src/**/*.spec.ts`):
 
-5. Run Prettier before committing:
+   ```bash
+   npm test            # run once
+   npm run test:cov    # with coverage report
+   ```
+
+5. Test manually using the example app in `app/`.
+
+6. Run Prettier before committing:
 
    ```bash
    npm run format
