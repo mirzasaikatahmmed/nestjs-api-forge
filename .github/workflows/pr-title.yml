@@ -1,0 +1,30 @@
+name: PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Conventional title
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Check PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          PATTERN='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|security)(\([a-z0-9._/-]+\))?!?: .+'
+          if ! printf '%s' "$PR_TITLE" | grep -Eq "$PATTERN"; then
+            echo "PR title must follow Conventional Commits, e.g. 'fix: handle empty body' or 'feat(health): add memory stats'."
+            echo "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert, security."
+            exit 1
+          fi
+          if [ "${#PR_TITLE}" -gt 72 ]; then
+            echo "PR title is ${#PR_TITLE} characters; keep it at 72 or fewer."
+            exit 1
+          fi
