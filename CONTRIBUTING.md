@@ -66,6 +66,12 @@ npm run build:watch
 npm test
 ```
 
+### API docs
+
+```bash
+npm run docs   # generates ./docs with TypeDoc (published to GitHub Pages from main)
+```
+
 ---
 
 ## Project Structure

@@ -34,6 +34,7 @@
     "test:cov": "jest --coverage",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
+    "docs": "typedoc",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
@@ -69,6 +70,7 @@
     "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.0",
     "ts-jest": "^29.4.14",
+    "typedoc": "^0.28.20",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.59.3"
   },

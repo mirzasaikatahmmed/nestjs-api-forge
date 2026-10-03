@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "tsconfig": "tsconfig.build.json",
+  "out": "docs",
+  "name": "NestJS API Forge",
+  "readme": "README.md",
+  "exclude": ["**/*.spec.ts"],
+  "excludePrivate": true,
+  "githubPages": true,
+  "treatWarningsAsErrors": true
+}
