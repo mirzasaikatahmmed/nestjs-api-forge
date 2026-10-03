@@ -7,9 +7,11 @@
 [![npm version](https://img.shields.io/npm/v/nestjs-api-forge?color=blue&label=npm)](https://www.npmjs.com/package/nestjs-api-forge)
 [![npm downloads](https://img.shields.io/npm/dm/nestjs-api-forge?color=green)](https://www.npmjs.com/package/nestjs-api-forge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![NestJS](https://img.shields.io/badge/NestJS-%3E%3D9-red)](https://nestjs.com)
+[![NestJS](https://img.shields.io/badge/NestJS-9%20%7C%2010%20%7C%2011-red)](https://nestjs.com)
+[![Node](https://img.shields.io/node/v/nestjs-api-forge?label=node)](https://nodejs.org)
 [![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178c6)](https://www.typescriptlang.org)
-[![CI](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/publish.yml?label=build)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/publish.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/ci.yml?branch=main&label=CI)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/ci.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/codeql.yml?branch=main&label=CodeQL)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/codeql.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?logo=github-sponsors)](https://github.com/sponsors/mirzasaikatahmmed)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-☕-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/saikat)
 
