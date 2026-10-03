@@ -117,14 +117,21 @@ describe('ForgeExceptionFilter', () => {
     expect(body().meta.version).toBe('v2');
   });
 
-  // Known bug: ApiResponseDto.error always adds `timestamp`, so the option is ignored.
-  // Remove `.failing` once fixed.
-  it.failing('omits the timestamp when includeTimestamp is false', () => {
+  it('omits the timestamp from the JSON body when includeTimestamp is false', () => {
     const { filter, host, body } = setup({ includeTimestamp: false });
 
     filter.catch(new ConflictException(), host);
 
     expect(body().meta.timestamp).toBeUndefined();
+    expect(JSON.parse(JSON.stringify(body())).meta).not.toHaveProperty('timestamp');
+  });
+
+  it('includes an ISO timestamp by default', () => {
+    const { filter, host, body } = setup();
+
+    filter.catch(new ConflictException(), host);
+
+    expect(new Date(body().meta.timestamp).toISOString()).toBe(body().meta.timestamp);
   });
 
   describe('request id', () => {
