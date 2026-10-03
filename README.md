@@ -12,6 +12,7 @@
 [![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178c6)](https://www.typescriptlang.org)
 [![CI](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/ci.yml?branch=main&label=CI)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/ci.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/mirzasaikatahmmed/nestjs-api-forge/codeql.yml?branch=main&label=CodeQL)](https://github.com/mirzasaikatahmmed/nestjs-api-forge/actions/workflows/codeql.yml)
+[![Docs](https://img.shields.io/badge/docs-API%20reference-blue)](https://mirzasaikatahmmed.github.io/nestjs-api-forge/)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?logo=github-sponsors)](https://github.com/sponsors/mirzasaikatahmmed)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-☕-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/saikat)
 

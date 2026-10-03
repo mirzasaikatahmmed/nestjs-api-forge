@@ -51,6 +51,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Build API docs
+        if: matrix.node == 22
+        run: npm run docs
+
       - name: Test
         run: npm test
 
