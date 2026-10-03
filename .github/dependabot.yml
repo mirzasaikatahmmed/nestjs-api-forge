@@ -23,3 +23,13 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # The package supports NestJS 9-11 (CI matrix); dev tooling stays on 11
+      - dependency-name: "@nestjs/*"
+        update-types: ["version-update:semver-major"]
+      # engines.node is >=18, so keep the Node typings on a supported major
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # Nest 9 peers reflect-metadata ^0.1; 0.2 breaks the Nest 9 CI job
+      - dependency-name: "reflect-metadata"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
