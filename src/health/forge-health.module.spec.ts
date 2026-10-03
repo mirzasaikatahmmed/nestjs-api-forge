@@ -4,10 +4,15 @@ import { ServiceUnavailableException } from '../exceptions';
 import { ForgeHealthController } from './forge-health.controller';
 import { ForgeHealthModule } from './forge-health.module';
 
-async function controllerFor(options: Parameters<typeof ForgeHealthModule.register>[0]) {
+async function controllerFor(
+  options: Parameters<typeof ForgeHealthModule.register>[0],
+) {
   const dynamic = ForgeHealthModule.register(options);
-  const moduleRef = await Test.createTestingModule({ imports: [dynamic] }).compile();
-  const controllerClass = dynamic.controllers?.[0] as typeof ForgeHealthController;
+  const moduleRef = await Test.createTestingModule({
+    imports: [dynamic],
+  }).compile();
+  const controllerClass = dynamic
+    .controllers?.[0] as typeof ForgeHealthController;
   return {
     controller: moduleRef.get(controllerClass),
     path: Reflect.getMetadata(PATH_METADATA, controllerClass),
@@ -39,6 +44,8 @@ describe('ForgeHealthModule', () => {
       checks: [{ name: 'db', check: () => ({ status: 'error' }) }],
     });
 
-    await expect(controller.health()).rejects.toBeInstanceOf(ServiceUnavailableException);
+    await expect(controller.health()).rejects.toBeInstanceOf(
+      ServiceUnavailableException,
+    );
   });
 });

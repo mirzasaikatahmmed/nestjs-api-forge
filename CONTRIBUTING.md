@@ -173,7 +173,8 @@ Match the style of the surrounding code for any area not covered by Prettier.
 6. Run Prettier before committing:
 
    ```bash
-   npm run format
+   npm run format        # fix
+   npm run format:check  # what CI runs
    ```
 
 ### Key Source Areas

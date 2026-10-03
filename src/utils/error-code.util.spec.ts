@@ -1,4 +1,8 @@
-import { httpStatusToErrorCode, isClientError, isServerError } from './error-code.util';
+import {
+  httpStatusToErrorCode,
+  isClientError,
+  isServerError,
+} from './error-code.util';
 
 describe('error-code.util', () => {
   it.each([

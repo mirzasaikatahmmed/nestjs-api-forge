@@ -12,5 +12,5 @@ trim_trailing_whitespace = true
 trim_trailing_whitespace = false
 
 # These files are committed with CRLF line endings
-[{package.json,package-lock.json,.gitignore,src/index.ts}]
+[{package.json,package-lock.json,.gitignore}]
 end_of_line = crlf

@@ -4,7 +4,12 @@ import { ApiErrorDetail } from '../interfaces/api-response.interface';
 
 export class ValidationException extends ApiException {
   constructor(details: ApiErrorDetail[]) {
-    super('Validation failed', HttpStatus.BAD_REQUEST, 'VALIDATION_ERROR', details);
+    super(
+      'Validation failed',
+      HttpStatus.BAD_REQUEST,
+      'VALIDATION_ERROR',
+      details,
+    );
   }
 
   static fromConstraints(

@@ -12,20 +12,32 @@ import {
 
 type Metadata = Partial<Record<string, unknown>>;
 
-function setup(options: ForgeOptions = {}, metadata: Metadata = {}, headers: Record<string, string> = {}) {
+function setup(
+  options: ForgeOptions = {},
+  metadata: Metadata = {},
+  headers: Record<string, string> = {},
+) {
   const reflector = new Reflector();
-  jest.spyOn(reflector, 'getAllAndOverride').mockImplementation((key) => metadata[key as string] as never);
+  jest
+    .spyOn(reflector, 'getAllAndOverride')
+    .mockImplementation((key) => metadata[key as string] as never);
 
   const response = { statusCode: 200, setHeader: jest.fn() };
   const request = { url: '/orders', headers };
   const context = {
     getHandler: () => undefined,
     getClass: () => undefined,
-    switchToHttp: () => ({ getRequest: () => request, getResponse: () => response }),
+    switchToHttp: () => ({
+      getRequest: () => request,
+      getResponse: () => response,
+    }),
   } as unknown as ExecutionContext;
   const next: CallHandler = { handle: () => of({ id: 1 }) };
 
-  const run = () => lastValueFrom(new ForgeResponseInterceptor(reflector, options).intercept(context, next));
+  const run = () =>
+    lastValueFrom(
+      new ForgeResponseInterceptor(reflector, options).intercept(context, next),
+    );
   return { run, response };
 }
 
@@ -59,7 +71,10 @@ describe('ForgeResponseInterceptor', () => {
     const withOption = setup({ defaultSuccessMessage: 'Fine' });
     await expect(withOption.run()).resolves.toMatchObject({ message: 'Fine' });
 
-    const withBoth = setup({ defaultSuccessMessage: 'Fine' }, { [FORGE_MESSAGE_KEY]: 'Custom' });
+    const withBoth = setup(
+      { defaultSuccessMessage: 'Fine' },
+      { [FORGE_MESSAGE_KEY]: 'Custom' },
+    );
     await expect(withBoth.run()).resolves.toMatchObject({ message: 'Custom' });
   });
 
@@ -70,7 +85,11 @@ describe('ForgeResponseInterceptor', () => {
     );
     const res = (await run()) as { meta: Record<string, unknown> };
 
-    expect(res.meta).toMatchObject({ version: 'v1', region: 'eu', path: '/orders' });
+    expect(res.meta).toMatchObject({
+      version: 'v1',
+      region: 'eu',
+      path: '/orders',
+    });
     expect(res.meta.responseTime).toMatch(/^\d+ms$/);
   });
 
@@ -79,7 +98,9 @@ describe('ForgeResponseInterceptor', () => {
     const res = (await run()) as { meta: Record<string, unknown> };
 
     expect(res.meta.timestamp).toBeUndefined();
-    expect(JSON.parse(JSON.stringify(res)).meta).not.toHaveProperty('timestamp');
+    expect(JSON.parse(JSON.stringify(res)).meta).not.toHaveProperty(
+      'timestamp',
+    );
   });
 
   it('includes an ISO timestamp by default', async () => {
@@ -94,7 +115,10 @@ describe('ForgeResponseInterceptor', () => {
     const plainRes = (await plain.run()) as { meta: Record<string, unknown> };
     expect(plainRes.meta).toMatchObject({ deprecated: true });
     expect(plainRes.meta.deprecationNotice).toBeUndefined();
-    expect(plain.response.setHeader).toHaveBeenCalledWith('Deprecation', 'true');
+    expect(plain.response.setHeader).toHaveBeenCalledWith(
+      'Deprecation',
+      'true',
+    );
 
     const withNotice = setup({}, { [FORGE_DEPRECATED_KEY]: 'Use /v2/orders' });
     await expect(withNotice.run()).resolves.toMatchObject({
@@ -106,9 +130,18 @@ describe('ForgeResponseInterceptor', () => {
     const generated = setup({ includeRequestId: true });
     const res = (await generated.run()) as { meta: { requestId: string } };
     expect(res.meta.requestId).toMatch(/^[0-9a-f-]{36}$/);
-    expect(generated.response.setHeader).toHaveBeenCalledWith('x-request-id', res.meta.requestId);
+    expect(generated.response.setHeader).toHaveBeenCalledWith(
+      'x-request-id',
+      res.meta.requestId,
+    );
 
-    const passthrough = setup({ includeRequestId: true }, {}, { 'x-request-id': 'req-9' });
-    await expect(passthrough.run()).resolves.toMatchObject({ meta: { requestId: 'req-9' } });
+    const passthrough = setup(
+      { includeRequestId: true },
+      {},
+      { 'x-request-id': 'req-9' },
+    );
+    await expect(passthrough.run()).resolves.toMatchObject({
+      meta: { requestId: 'req-9' },
+    });
   });
 });

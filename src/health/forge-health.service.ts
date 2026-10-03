@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  ForgeHealthData,
-  ForgeHealthOptions,
-} from './forge-health.interfaces';
+import { ForgeHealthData, ForgeHealthOptions } from './forge-health.interfaces';
 
 export const FORGE_HEALTH_OPTIONS = 'FORGE_HEALTH_OPTIONS';
 

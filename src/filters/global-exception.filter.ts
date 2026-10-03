@@ -64,7 +64,11 @@ export class ForgeExceptionFilter implements ExceptionFilter {
   }
 
   private buildMeta(request: Request, requestId: string | undefined) {
-    const { includePath = true, includeTimestamp = true, version } = this.options;
+    const {
+      includePath = true,
+      includeTimestamp = true,
+      version,
+    } = this.options;
     return {
       // `undefined` overrides ApiResponseDto's default timestamp and is dropped from the JSON body
       timestamp: includeTimestamp ? new Date().toISOString() : undefined,
@@ -74,7 +78,10 @@ export class ForgeExceptionFilter implements ExceptionFilter {
     };
   }
 
-  private buildErrorResponse(exception: unknown, meta: Record<string, unknown>) {
+  private buildErrorResponse(
+    exception: unknown,
+    meta: Record<string, unknown>,
+  ) {
     if (exception instanceof ApiException) {
       return ApiResponseDto.error(
         exception.message,
