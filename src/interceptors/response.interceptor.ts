@@ -40,10 +40,11 @@ export class ForgeResponseInterceptor implements NestInterceptor {
       [context.getHandler(), context.getClass()],
     );
 
-    const extraMeta = this.reflector.getAllAndOverride<Record<string, unknown>>(
-      FORGE_META_KEY,
-      [context.getHandler(), context.getClass()],
-    ) ?? {};
+    const extraMeta =
+      this.reflector.getAllAndOverride<Record<string, unknown>>(
+        FORGE_META_KEY,
+        [context.getHandler(), context.getClass()],
+      ) ?? {};
 
     const deprecatedValue = this.reflector.getAllAndOverride<true | string>(
       FORGE_DEPRECATED_KEY,
@@ -108,7 +109,11 @@ export class ForgeResponseInterceptor implements NestInterceptor {
   }
 
   private buildMeta(request: Request, requestId: string | undefined) {
-    const { includePath = true, includeTimestamp = true, version } = this.options;
+    const {
+      includePath = true,
+      includeTimestamp = true,
+      version,
+    } = this.options;
     return {
       // `undefined` overrides ApiResponseDto's default timestamp and is dropped from the JSON body
       timestamp: includeTimestamp ? new Date().toISOString() : undefined,

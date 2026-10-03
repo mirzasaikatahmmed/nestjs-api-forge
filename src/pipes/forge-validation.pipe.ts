@@ -1,4 +1,8 @@
-import { ValidationPipe, ValidationPipeOptions, ValidationError } from '@nestjs/common';
+import {
+  ValidationPipe,
+  ValidationPipeOptions,
+  ValidationError,
+} from '@nestjs/common';
 import { ValidationException } from '../exceptions/validation.exception';
 import { ApiErrorDetail } from '../interfaces/api-response.interface';
 

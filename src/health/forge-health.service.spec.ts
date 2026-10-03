@@ -1,7 +1,8 @@
 import { ForgeHealthService } from './forge-health.service';
 import { ForgeHealthOptions } from './forge-health.interfaces';
 
-const service = (options: ForgeHealthOptions = {}) => new ForgeHealthService(options);
+const service = (options: ForgeHealthOptions = {}) =>
+  new ForgeHealthService(options);
 
 describe('ForgeHealthService', () => {
   it('reports ok with uptime by default', async () => {
@@ -23,7 +24,12 @@ describe('ForgeHealthService', () => {
 
     expect(data.uptime).toBeUndefined();
     expect(data.version).toBe('1.2.3');
-    expect(Object.keys(data.memory ?? {})).toEqual(['rss', 'heapUsed', 'heapTotal', 'external']);
+    expect(Object.keys(data.memory ?? {})).toEqual([
+      'rss',
+      'heapUsed',
+      'heapTotal',
+      'external',
+    ]);
   });
 
   it('runs sync and async checks and stays ok when all pass', async () => {
@@ -36,12 +42,17 @@ describe('ForgeHealthService', () => {
 
     expect(ok).toBe(true);
     expect(data.status).toBe('ok');
-    expect(data.checks).toEqual({ db: { status: 'ok' }, cache: { status: 'ok' } });
+    expect(data.checks).toEqual({
+      db: { status: 'ok' },
+      cache: { status: 'ok' },
+    });
   });
 
   it('is degraded when a check returns an error status', async () => {
     const { data, ok } = await service({
-      checks: [{ name: 'db', check: () => ({ status: 'error', message: 'down' }) }],
+      checks: [
+        { name: 'db', check: () => ({ status: 'error', message: 'down' }) },
+      ],
     }).check();
 
     expect(ok).toBe(false);
@@ -69,6 +80,9 @@ describe('ForgeHealthService', () => {
 
     expect(ok).toBe(false);
     expect(data.checks?.db).toEqual({ status: 'error', message: 'boom' });
-    expect(data.checks?.other).toEqual({ status: 'error', message: 'Check failed' });
+    expect(data.checks?.other).toEqual({
+      status: 'error',
+      message: 'Check failed',
+    });
   });
 });

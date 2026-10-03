@@ -1,7 +1,10 @@
 import { Controller, DynamicModule, Module } from '@nestjs/common';
 import { ForgeHealthController } from './forge-health.controller';
 import { ForgeHealthOptions } from './forge-health.interfaces';
-import { FORGE_HEALTH_OPTIONS, ForgeHealthService } from './forge-health.service';
+import {
+  FORGE_HEALTH_OPTIONS,
+  ForgeHealthService,
+} from './forge-health.service';
 
 @Module({})
 export class ForgeHealthModule {

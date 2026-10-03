@@ -1,10 +1,18 @@
-import { ArgumentsHost, BadRequestException as NestBadRequest, HttpException, Logger } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  BadRequestException as NestBadRequest,
+  HttpException,
+  Logger,
+} from '@nestjs/common';
 import { ForgeExceptionFilter } from './global-exception.filter';
 import { ForgeOptions } from '../interfaces/api-response.interface';
 import { ConflictException } from '../exceptions';
 import { ValidationException } from '../exceptions/validation.exception';
 
-function setup(options: ForgeOptions = {}, headers: Record<string, string> = {}) {
+function setup(
+  options: ForgeOptions = {},
+  headers: Record<string, string> = {},
+) {
   const json = jest.fn();
   const response = {
     setHeader: jest.fn(),
@@ -13,7 +21,10 @@ function setup(options: ForgeOptions = {}, headers: Record<string, string> = {})
   };
   const request = { method: 'GET', url: '/users?page=1', headers };
   const host = {
-    switchToHttp: () => ({ getResponse: () => response, getRequest: () => request }),
+    switchToHttp: () => ({
+      getResponse: () => response,
+      getRequest: () => request,
+    }),
   } as unknown as ArgumentsHost;
   const filter = new ForgeExceptionFilter(options);
   return { filter, host, response, json, body: () => json.mock.calls[0][0] };
@@ -44,7 +55,10 @@ describe('ForgeExceptionFilter', () => {
     expect(body().error.details).toBeUndefined();
 
     filter.catch(new ValidationException(details), host);
-    expect(response.json.mock.calls[1][0].error).toEqual({ code: 'VALIDATION_ERROR', details });
+    expect(response.json.mock.calls[1][0].error).toEqual({
+      code: 'VALIDATION_ERROR',
+      details,
+    });
   });
 
   it('formats plain HttpException using the status-derived code', () => {
@@ -55,18 +69,27 @@ describe('ForgeExceptionFilter', () => {
 
     const second = setup();
     second.filter.catch(new HttpException('Gone fishing', 404), second.host);
-    expect(second.body()).toMatchObject({ statusCode: 404, message: 'Gone fishing', error: { code: 'NOT_FOUND' } });
+    expect(second.body()).toMatchObject({
+      statusCode: 404,
+      message: 'Gone fishing',
+      error: { code: 'NOT_FOUND' },
+    });
   });
 
   it('turns Nest validation message arrays into field details', () => {
     const { filter, host, body } = setup();
 
     filter.catch(
-      new NestBadRequest({ message: ['email must be an email', 'name should not be empty', 'bare'] }),
+      new NestBadRequest({
+        message: ['email must be an email', 'name should not be empty', 'bare'],
+      }),
       host,
     );
 
-    expect(body()).toMatchObject({ statusCode: 400, message: 'Validation failed' });
+    expect(body()).toMatchObject({
+      statusCode: 400,
+      message: 'Validation failed',
+    });
     expect(body().error).toEqual({
       code: 'BAD_REQUEST',
       details: [
@@ -123,7 +146,9 @@ describe('ForgeExceptionFilter', () => {
     filter.catch(new ConflictException(), host);
 
     expect(body().meta.timestamp).toBeUndefined();
-    expect(JSON.parse(JSON.stringify(body())).meta).not.toHaveProperty('timestamp');
+    expect(JSON.parse(JSON.stringify(body())).meta).not.toHaveProperty(
+      'timestamp',
+    );
   });
 
   it('includes an ISO timestamp by default', () => {
@@ -131,7 +156,9 @@ describe('ForgeExceptionFilter', () => {
 
     filter.catch(new ConflictException(), host);
 
-    expect(new Date(body().meta.timestamp).toISOString()).toBe(body().meta.timestamp);
+    expect(new Date(body().meta.timestamp).toISOString()).toBe(
+      body().meta.timestamp,
+    );
   });
 
   describe('request id', () => {
@@ -145,16 +172,24 @@ describe('ForgeExceptionFilter', () => {
     });
 
     it('generates a UUID when includeRequestId is on', () => {
-      const { filter, host, response, body } = setup({ includeRequestId: true });
+      const { filter, host, response, body } = setup({
+        includeRequestId: true,
+      });
 
       filter.catch(new ConflictException(), host);
 
       expect(body().meta.requestId).toMatch(/^[0-9a-f-]{36}$/);
-      expect(response.setHeader).toHaveBeenCalledWith('x-request-id', body().meta.requestId);
+      expect(response.setHeader).toHaveBeenCalledWith(
+        'x-request-id',
+        body().meta.requestId,
+      );
     });
 
     it('passes through the incoming correlation header', () => {
-      const { filter, host, body } = setup({ includeRequestId: true }, { 'x-correlation-id': 'abc-123' });
+      const { filter, host, body } = setup(
+        { includeRequestId: true },
+        { 'x-correlation-id': 'abc-123' },
+      );
 
       filter.catch(new ConflictException(), host);
 
@@ -162,7 +197,10 @@ describe('ForgeExceptionFilter', () => {
     });
 
     it('supports a custom header name and does not generate when absent', () => {
-      const withHeader = setup({ correlationIdHeader: 'X-Trace' }, { 'x-trace': 't-1' });
+      const withHeader = setup(
+        { correlationIdHeader: 'X-Trace' },
+        { 'x-trace': 't-1' },
+      );
       withHeader.filter.catch(new ConflictException(), withHeader.host);
       expect(withHeader.body().meta.requestId).toBe('t-1');
 
