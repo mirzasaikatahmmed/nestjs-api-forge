@@ -54,8 +54,10 @@ Register `ApiForgeModule` once and every response from your API is automatically
 
 ### Requirements
 
-- **Node.js** v18 or higher
-- **NestJS** v9, v10, or v11
+- **Node.js** v20.19 or higher (required for `require(esm)`, which NestJS 12 uses)
+- **NestJS** v9, v10, v11, or v12
+
+> NestJS 12 ships ESM-only packages. This library stays CommonJS and loads them through Node's `require(esm)`, so NestJS 12 needs Node v20.19+/v22.12+. NestJS 9-11 work on any Node version the library supports.
 
 ### Install
 
@@ -467,8 +469,8 @@ cd app && npm install && npm run start:dev
 ## 📦 Peer Dependencies
 
 ```
-@nestjs/common   ^9 | ^10 | ^11
-@nestjs/core     ^9 | ^10 | ^11
+@nestjs/common   ^9 | ^10 | ^11 | ^12
+@nestjs/core     ^9 | ^10 | ^11 | ^12
 reflect-metadata ^0.1 | ^0.2
 rxjs             ^7
 ```

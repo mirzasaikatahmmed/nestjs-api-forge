@@ -65,7 +65,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        nest: [9, 10, 11]
+        include:
+          - nest: 9
+            node: 22
+          - nest: 10
+            node: 22
+          - nest: 11
+            node: 22
+          # NestJS 12 is ESM-only and Jest can only require(esm) on Node >= 24.9
+          - nest: 12
+            node: 24
 
     steps:
       - name: Checkout repository
@@ -74,13 +83,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: ${{ matrix.node }}
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      # package.json declares support for Nest 9-11, so verify against each major
+      # package.json declares support for Nest 9-12, so verify against each major
       - name: Install NestJS ${{ matrix.nest }}
         run: >
           npm install --no-save --ignore-scripts
