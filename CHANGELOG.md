@@ -4,13 +4,13 @@ All notable changes to **nestjs-api-forge** are documented here.
 
 ---
 
-## [Unreleased]
+## [2.0.0] — 2026-10-06
+
+### Breaking changes
+- **`engines.node` raised from `>=18` to `>=20.19.0`** — NestJS 12 ships ESM-only packages, which this library loads through Node's `require(esm)`; that requires Node >= 20.19 or >= 22.12. The library itself remains CommonJS
 
 ### Added
-- **NestJS 12 support** — the `@nestjs/common` and `@nestjs/core` peer ranges now include `^12.0.0`. NestJS 12 is ESM-only, so it is consumed through Node's `require(esm)`; the package itself stays CommonJS. CI verifies NestJS 9-11 on Node 22 and NestJS 12 on Node 24 (the oldest runtime where Jest can load ESM through `require`)
-
-### Changed
-- **`engines.node`** — raised from `>=18` to `>=20.19.0`, the minimum Node version with unflagged `require(esm)` support required by NestJS 12
+- **NestJS 12 support** — the `@nestjs/common` and `@nestjs/core` peer ranges now include `^12.0.0`. CI verifies NestJS 9-11 on Node 22 and NestJS 12 on Node 24 with `--experimental-vm-modules`, the oldest runtime and config where Jest can load ESM through `require`
 
 ---
 
