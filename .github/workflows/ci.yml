@@ -72,9 +72,10 @@ jobs:
             node: 22
           - nest: 11
             node: 22
-          # NestJS 12 is ESM-only and Jest can only require(esm) on Node >= 24.9
+          # NestJS 12 is ESM-only; Jest needs Node >= 24.9 plus --experimental-vm-modules
           - nest: 12
             node: 24
+            node_options: --experimental-vm-modules
 
     steps:
       - name: Checkout repository
@@ -106,3 +107,6 @@ jobs:
 
       - name: Test
         run: npm test
+        env:
+          # Unset for Nest 9-11; required so Jest can require(esm) NestJS 12
+          NODE_OPTIONS: ${{ matrix.node_options }}
